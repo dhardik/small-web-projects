@@ -32,6 +32,18 @@ function addTaskToArray()
   }
 }
 
+function checkCompletedTasks(key)
+{
+  for(var i=0;i<task_completed.length;i++)
+  {
+    if(key==task_completed[i])
+    {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 /* create contents of table from array accordingly */
 function createTableFromArray()
 {
@@ -56,7 +68,14 @@ function createTableFromArray()
     tr.appendChild(srNo_td);
 
     var taskName_td=document.createElement("td");
-    taskName_td.innerHTML=task_array[i].Name;
+    if(checkCompletedTasks(i))
+    {
+      taskName_td.innerHTML="<strike>"+task_array[i].Name+"</strike>";
+    }
+    else
+    {
+      taskName_td.innerHTML=task_array[i].Name;
+    }
     tr.appendChild(taskName_td);
 
     var deleteButton=document.createElement("button");
@@ -64,11 +83,26 @@ function createTableFromArray()
     deleteButton.addEventListener("click",function(event)
   {
     /* using id given to parentNode as index of array accordingly */
-    task_array.splice(event.target.parentNode.id,1);
+    var targetID=event.target.parentNode.id;
+    task_array.splice(targetID,1);
+    for(var k=targetID;k<task_completed.length;k++)
+    {
+      task_completed[k]-=1;
+    }
     removeAllTableContents();
     createTableFromArray();
   });
     tr.appendChild(deleteButton);
+
+    var doneButton=document.createElement("button");
+    doneButton.innerHTML="Done";
+    doneButton.addEventListener("click",function(event)
+  {
+    task_completed.push(event.target.parentNode.id);
+    removeAllTableContents();
+    createTableFromArray();
+  });
+  tr.appendChild(doneButton);
 
     table.appendChild(tr);
   }
