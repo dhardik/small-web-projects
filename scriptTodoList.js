@@ -9,8 +9,7 @@ var task_completed=[];
 function removeAllTableContents()
 {
   var childNodes = table.childNodes;
-  for (var i = 0; childNodes.length > 0;)
-  {
+  for (var i = 0; childNodes.length > 0;) {
     table.removeChild(childNodes[i]);
   }
 }
